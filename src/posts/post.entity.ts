@@ -4,11 +4,14 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
 import { CreatePostMetaOptionsDto } from '../meta-options/dtos/create-meta-options.dto';
 import { PostType } from './enums/postType.enum';
 import { PostStatus } from './enums/postStatus.enum';
+import { MetaOption } from '../meta-options/meta-option.entity';
 
 @Entity('posts')
 export class Post {
@@ -49,7 +52,9 @@ export class Post {
   @Column({ type: 'timestamp', nullable: true })
   publishOn?: Date;
 
-  //TODO: Complete with relationship
-  tags: string[];
-  metaOptions: CreatePostMetaOptionsDto[];
+  @OneToOne(() => MetaOption)
+  @JoinColumn()
+  metaOptions?: MetaOption;
+
+  tags?: string[];
 }
